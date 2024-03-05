@@ -1,0 +1,28 @@
+create trigger trg_itens_ordem_insert_baixa_estoque after insert
+on itens_ordem_servico
+for each row
+update estoque set est_qtd_saida = est_qtd_saida - new.itens_quantidade
+where est_fk_produto = new.itens_fk_produto;
+
+
+create trigger trg_itens_ordem_insert_devolucao_estoque after delete
+on itens_ordem_servico
+for each row
+update estoque set est_qtd_saida = est_qtd_saida + old.itens_quantidade
+where est_fk_produto = old.itens_fk_produto;
+
+/*
+create trigger trg_itens_ordem_insert_estoque_atual after insert
+on itens_ordem_servico
+for each row
+update estoque set est_qtd_saida = 
+*/
+
+select * from itens_ordem_servico;
+select * from estoque;
+
+insert into itens_ordem_servico(itens_fk_ordem, itens_fk_produto, itens_quantidade, itens_valor_total, itens_valor_unitario, itens_data, itens_hora)
+values (1, 1, 2, 50, 25, '2024-03-05', '08:57:00');
+
+delete from itens_ordem_servico
+where  itens_id = 7;
